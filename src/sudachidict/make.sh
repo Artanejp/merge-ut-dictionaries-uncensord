@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Author: UTUMI Hirosi (utuhiro78 at yahoo dot co dot jp)
 # License: Apache License, Version 2.0
