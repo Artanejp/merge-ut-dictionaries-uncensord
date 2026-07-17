@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Author: UTUMI Hirosi (utuhiro78 at yahoo dot co dot jp)
 # License: Apache License, Version 2.0
@@ -16,81 +16,86 @@ sudachidict="true"
 
 rm -rf mozcdic-ut*
 
-if [[ $alt_cannadic = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$alt_cannadic" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-alt-cannadic.git
 fi
 
-if [[ $alt_cannadic = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$alt_cannadic" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../alt-cannadic/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $edict2 = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$edict2" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-edict2.git
 fi
 
-if [[ $edict2 = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$edict2" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../edict2/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $jawiki = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$jawiki" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-jawiki.git
 fi
 
-if [[ $jawiki = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$jawiki" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../jawiki/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $neologd = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$neologd" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-neologd.git
 fi
 
-if [[ $neologd = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$neologd" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../neologd/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $personal_names = "true" ]]; then
+if [ "$personal_names" = "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-personal-names.git
 fi
 
-if [[ $place_names = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$personal_names" = "true" ] && [ "$generate_latest" = "true" ]; then
+    bzip2 -dfk mozcdic-ut-personal-names/mozcdic-ut-personal-names.txt.bz2
+    mv mozcdic-ut-personal-names/mozcdic-ut-personal-names.txt .
+fi
+
+if [ "$place_names" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-place-names.git
 fi
 
-if [[ $place_names = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$place_names" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../place-names/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $skk_jisyo = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$skk_jisyo" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-skk-jisyo.git
 fi
 
-if [[ $skk_jisyo = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$skk_jisyo" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../skk-jisyo/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $sudachidict = "true" ]] && [[ $generate_latest != "true" ]]; then
+if [ "$sudachidict" = "true" ] && [ "$generate_latest" != "true" ]; then
     git clone --depth 1 https://github.com/utuhiro78/mozcdic-ut-sudachidict.git
 fi
 
-if [[ $sudachidict = "true" ]] && [[ $generate_latest = "true" ]]; then
+if [ "$sudachidict" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../sudachidict/
     sh make.sh
-    cd -
+    cd ../merge/
 fi
 
-if [[ $generate_latest != "true" ]]; then
+if [ "$generate_latest" != "true" ]; then
     bzip2 -dfk mozcdic-ut-*/mozcdic-ut-*.txt.bz2
     mv mozcdic-ut-*/mozcdic-ut-*.txt .
 fi
