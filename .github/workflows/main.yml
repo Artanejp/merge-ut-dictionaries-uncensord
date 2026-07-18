@@ -1,0 +1,27 @@
+name: Generate merge-ut-dictionaries artifact
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout merge-ut-dictionaries
+        uses: actions/checkout@v4
+
+      - name: Run make.sh in merge/
+        working-directory: ./merge
+        run: |
+          chmod +x make.sh
+          sh make.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: merge-ut-dictionaries-artifact
+          path: ./merge/mozcdic-ut.txt
+          retention-days: 7
