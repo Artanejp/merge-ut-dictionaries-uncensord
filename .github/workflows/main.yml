@@ -13,8 +13,8 @@ jobs:
       - name: Checkout merge-ut-dictionaries
         uses: actions/checkout@v4
 
-      - name: Run make.sh in merge/
-        working-directory: ./merge
+      - name: Run make.sh in src/merge/
+        working-directory: ./src/merge
         run: |
           chmod +x make.sh
           sh make.sh
@@ -23,5 +23,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: merge-ut-dictionaries-artifact
-          path: ./merge/mozcdic-ut.txt
-          retention-days: 7
+          path: ./src/merge/mozcdic-ut.txt
+          retention-days: 1
