@@ -11,7 +11,7 @@ jobs:
     
     steps:
       - name: Checkout merge-ut-dictionaries
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run make.sh in src/merge/
         working-directory: ./src/merge
@@ -20,7 +20,7 @@ jobs:
           sh make.sh
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: merge-ut-dictionaries-artifact
           path: ./src/merge/mozcdic-ut.txt
