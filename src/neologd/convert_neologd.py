@@ -33,7 +33,7 @@ def main():
     if not Path(neologd_file).exists():
         url = 'https://github.com/neologd/mecab-ipadic-neologd/raw/refs/' + \
             f'heads/master/seed/{neologd_file}'
-        urllib.request.urlretrieve(url)
+        urllib.request.urlretrieve(url, neologd_file)
 
     neologd_dict = []
 
