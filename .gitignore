@@ -1,0 +1,9 @@
+*~
+*.zip
+mozc-ut-*.txt
+mozc-ut.txt
+*.xz
+*.bz2
+*.gz
+SKK-JISYO.L
+src/mozcdic-ut-personal-names/
