@@ -3,8 +3,28 @@
 # Author: UTUMI Hirosi (utuhiro78 at yahoo dot co dot jp)
 # License: Apache License, Version 2.0
 
-python convert_edict2.py
-python ../common/adjust_entries.py mozcdic-ut-edict2.txt
+# Modified by: Kyuma Ohta (whatisthis dot sowhat at gmail dot com)
+
+__PYTHON=python
+for x in "$@" ; do
+    if [ "__xxx__$1" = "__xxx__" ] ; then
+       break
+    fi
+    case "$1" in 
+      --use-python )
+          shift
+	  if [ "__xxx__$1" != "__xxx__" ] ; then
+	      __PYTHON="$1"
+	      shift
+	  fi
+	  continue
+	  ;;
+    esac
+    shift
+done
+
+$__PYTHON convert_edict2.py
+$__PYTHON ../common/adjust_entries.py mozcdic-ut-edict2.txt
 
 bzip2 -k mozcdic-ut-*.txt
 mv mozcdic-ut-*.txt* ../merge/

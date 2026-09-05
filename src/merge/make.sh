@@ -3,16 +3,33 @@
 # Author: UTUMI Hirosi (utuhiro78 at yahoo dot co dot jp)
 # License: Apache License, Version 2.0
 
-#alt_cannadic="true"
-#edict2="true"
-jawiki="true"
-#neologd="true"
+# Modified by: Kyuma Ohta (whatisthis dot sowhat at gmail dot com)
+
+use_python="python3"
+#censor_unsuitable_words="true"
+alt_cannadic="true"
+edict2="true"
+#jawiki="true"
+neologd="true"
 personal_names="true"
 place_names="true"
-#skk_jisyo="true"
+skk_jisyo="true"
 sudachidict="true"
 
-#generate_latest="true"
+generate_latest="true"
+
+ARG_UNCENSORED=""
+ARG_PYTHON=""
+__PYTHON=python
+
+if [ "__xxx__$censor_unsuitable_words" != "__xxx__true" ] ; then
+     ARG_UNCENSORED="--uncensored"
+fi
+if [ "__xxx__$use_python" != "__xxx__" ] ; then
+    __PYTHON="$use_python"
+    ARG_PYTHON="--use-python $__PYTHON"
+fi
+
 
 rm -rf mozcdic-ut*
 
@@ -22,7 +39,7 @@ fi
 
 if [ "$alt_cannadic" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../alt-cannadic/
-    sh make.sh
+    sh make.sh $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -32,7 +49,7 @@ fi
 
 if [ "$edict2" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../edict2/
-    sh make.sh
+    sh make.sh $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -42,7 +59,7 @@ fi
 
 if [ "$jawiki" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../jawiki/
-    sh make.sh
+    sh make.sh $ARG_UNCENSORED $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -52,7 +69,7 @@ fi
 
 if [ "$neologd" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../neologd/
-    sh make.sh
+    sh make.sh $ARG_UNCENSORED $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -71,7 +88,7 @@ fi
 
 if [ "$place_names" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../place-names/
-    sh make.sh
+    sh make.sh $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -81,7 +98,7 @@ fi
 
 if [ "$skk_jisyo" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../skk-jisyo/
-    sh make.sh
+    sh make.sh $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -91,7 +108,7 @@ fi
 
 if [ "$sudachidict" = "true" ] && [ "$generate_latest" = "true" ]; then
     cd ../sudachidict/
-    sh make.sh
+    sh make.sh $ARG_UNCENSORED $ARG_PYTHON
     cd ../merge/
 fi
 
@@ -103,4 +120,4 @@ fi
 cat mozcdic-ut-*.txt > mozcdic-ut.txt
 
 # IDを更新、重複エントリを削除、コストを調整
-python merge_dictionaries.py mozcdic-ut.txt
+$__PYTHON merge_dictionaries.py mozcdic-ut.txt
