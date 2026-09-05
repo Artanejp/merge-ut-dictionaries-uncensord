@@ -6,9 +6,11 @@
 
 import bz2
 import csv
+import fnmatch
 import html
 import io
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -26,7 +28,10 @@ def main():
 
     file_ut = sys.argv[1]
     ut_entry = get_ut_entry(file_ut)
-    mozc_entry, id_mozc = get_mozc_entry()
+    if len(sys.argv) > 2:
+        mozc_entry, id_mozc = get_mozc_entry_with_dir(sys.argv[2])
+    else:
+        mozc_entry, id_mozc = get_mozc_entry()
 
     ut_entry = remove_duplicate(mozc_entry, ut_entry)
     jawiki_hit_dict = generate_jawiki_hit_dict()
@@ -128,24 +133,26 @@ def get_mozc_entry_with_dir(mozc_src_dir):
     # Mozc の最終コミット日を取得
     # 一般名詞の ID を取得
     with open(
-        mozc_src_dir + f'/src/data/dictionary_oss/id.def') as file:
+        mozc_src_dir + f'/src/data/dictionary_oss/id.def', 'r') as file:
         for line in file:
-            line = line.decode()
+            # line = line.read()
 
             if ' 名詞,一般,' in line:
                id_mozc = line.split(' 名詞,一般,')[0]
                break
 
         # Mozc 辞書のファイルリストを取得
-        all_files = os.list(src_dir)
-        dict_path = mozc_src_dir + f'/src/data/dictionary_oss/dictionary0'
-        dict_files = [f for f in all_files if f.startswith(dict_path)]
+        dict_path = mozc_src_dir + f'/src/data/dictionary_oss'
+        all_files = os.listdir(dict_path)
+        
+        dict_files = [f for f in all_files if fnmatch.fnmatch(f, 'dictionary*.txt')]
 
         # Mozc 辞書のエントリを取得
         mozc_entry = []
-
+        dict_files.sort()
+            
         for dict_file in dict_files:
-            with open(dict_file) as file:
+            with io.open_code(dict_path + f'/' + dict_file) as file:
                 # バイナリストリームをテキストストリームに変換
                 file_text = io.TextIOWrapper(file, encoding='utf-8')
                 reader = csv.reader(file_text, delimiter='\t')

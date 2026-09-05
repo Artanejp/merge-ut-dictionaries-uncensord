@@ -7,20 +7,26 @@
 
 use_python="python3"
 #censor_unsuitable_words="true"
-alt_cannadic="true"
-edict2="true"
-#jawiki="true"
+#alt_cannadic="true"
+#edict2="true"
+jawiki="true"
 neologd="true"
 personal_names="true"
 place_names="true"
-skk_jisyo="true"
+#skk_jisyo="true"
 sudachidict="true"
 
 generate_latest="true"
 
 ARG_UNCENSORED=""
 ARG_PYTHON=""
-__PYTHON=python
+ARG_FIXED_SRCDIR=""
+
+if [ "__xxx__$1" != "__xxx__" ] ; then
+    ARG_FIXED_SRCDIR="$1"
+fi
+
+__PYTHON=python3
 
 if [ "__xxx__$censor_unsuitable_words" != "__xxx__true" ] ; then
      ARG_UNCENSORED="--uncensored"
@@ -120,4 +126,4 @@ fi
 cat mozcdic-ut-*.txt > mozcdic-ut.txt
 
 # IDを更新、重複エントリを削除、コストを調整
-$__PYTHON merge_dictionaries.py mozcdic-ut.txt
+$__PYTHON merge_dictionaries.py mozcdic-ut.txt "$ARG_FIXED_SRCDIR"
