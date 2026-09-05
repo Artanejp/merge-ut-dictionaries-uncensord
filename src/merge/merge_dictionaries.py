@@ -124,6 +124,49 @@ def get_mozc_entry():
 
     return mozc_entry_mod, id_mozc
 
+def get_mozc_entry_with_dir(mozc_src_dir):
+    # Mozc の最終コミット日を取得
+    # 一般名詞の ID を取得
+    with open(
+        mozc_src_dir + f'/src/data/dictionary_oss/id.def') as file:
+        for line in file:
+            line = line.decode()
+
+            if ' 名詞,一般,' in line:
+               id_mozc = line.split(' 名詞,一般,')[0]
+               break
+
+        # Mozc 辞書のファイルリストを取得
+        all_files = os.list(src_dir)
+        dict_path = mozc_src_dir + f'/src/data/dictionary_oss/dictionary0'
+        dict_files = [f for f in all_files if f.startswith(dict_path)]
+
+        # Mozc 辞書のエントリを取得
+        mozc_entry = []
+
+        for dict_file in dict_files:
+            with open(dict_file) as file:
+                # バイナリストリームをテキストストリームに変換
+                file_text = io.TextIOWrapper(file, encoding='utf-8')
+                reader = csv.reader(file_text, delimiter='\t')
+                mozc_entry.extend(list(reader))
+
+        mozc_entry_mod = []
+
+        for entry in mozc_entry:
+            yomi, id1, id2, cost, hyouki = entry[:5]
+
+            # 不要な表記をスキップ
+            hyouki = remove_short_or_long_hyouki(hyouki)
+            if not hyouki:
+                continue
+
+            # 表記を正規化
+            hyouki = normalize_entry(hyouki)
+
+            mozc_entry_mod.append([yomi, id1, id2, cost, hyouki])
+
+    return mozc_entry_mod, id_mozc
 
 def remove_duplicate(mozc_entry, ut_entry):
     all_entry = mozc_entry + ut_entry
