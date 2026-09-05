@@ -1,9 +1,10 @@
 *~
 *.zip
-mozc-ut-*.txt
-mozc-ut.txt
+mozcdic-ut-*.txt
+mozcdic-ut.txt
 *.xz
 *.bz2
 *.gz
 SKK-JISYO.L
-src/mozcdic-ut-personal-names/
+src/merge/mozcdic-ut-personal-names
+
